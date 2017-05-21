@@ -1,0 +1,35 @@
+{%- extends "base.html" %}
+
+{% import "bootstrap/utils.html" as utils %}
+
+{% block content %}
+  <div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+    {%- if messages %}
+      <div class="row">
+	<div class="col-md-12">
+	  {{utils.flashed_messages(messages)}}
+	</div>
+      </div>
+    {%- endif %}
+  {%- endwith %}
+    <div class="row">
+			{% for profile in profiles %}
+				<div class="col-md-12">
+					<div class="media">
+						<div class="media-left">
+							<a href="{{ url_for('profile', profileId=profile['profileId']) }}">
+								<img class="media-object" src="https://ubisoft-avatars.akamaized.net/{{ profile['profileId'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" alt="{{ profile['name'] }}" height="64" width="64">
+							</a>
+						</div>
+						<div class="media-body">
+							<h3 class="media-heading">{{ profile['name'] }}</h3>
+							Rank: {{ "{:.2f}".format(profile['rank']['mmr']) }}    W/L: {{ "{:.2f}".format(profile['rank']['wins'] / profile['rank']['losses']) }}
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12"></div>
+			{% endfor %}
+    </div>
+   </div>
+{%- endblock %}

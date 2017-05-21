@@ -1,0 +1,117 @@
+{%- extends "base.html" %}
+
+{% import "bootstrap/utils.html" as utils %}
+
+{% set weapon_names = [
+    "Assault Rifle", "Submachine Gun", "Marksman Rifle", "Shotgun", "Handgun",
+		"Light Machine Gun", "Machine Pistol"
+	]
+%}
+
+{% set rank_icons = [
+        "https://i.imgur.com/ehILQ3i.jpg",
+        "https://i.imgur.com/6CxJoMn.jpg",
+        "https://i.imgur.com/eI11lah.jpg",
+        "https://i.imgur.com/0J0jSWB.jpg",
+        "https://i.imgur.com/42AC7RD.jpg",
+        "https://i.imgur.com/QD5LYD7.jpg",
+        "https://i.imgur.com/9AORiNm.jpg",
+        "https://i.imgur.com/hmPhPBj.jpg",
+        "https://i.imgur.com/D36ZfuR.jpg",
+        "https://i.imgur.com/m8GToyF.jpg",
+        "https://i.imgur.com/m8GToyF.jpg",
+        "https://i.imgur.com/EswGcx1.jpg",
+        "https://i.imgur.com/KmFpkNc.jpg",
+        "https://i.imgur.com/6Qg6aaH.jpg",
+        "https://i.imgur.com/B0s1o1h.jpg",
+        "https://i.imgur.com/ELbGMc7.jpg",
+        "https://i.imgur.com/ffDmiPk.jpg",
+        "https://i.imgur.com/Sv3PQQE.jpg",
+        "https://i.imgur.com/Uq3WhzZ.jpg",
+        "https://i.imgur.com/xx03Pc5.jpg",
+        "https://i.imgur.com/nODE0QI.jpg"
+    ] %}
+
+{% block content %}
+  <div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+    {%- if messages %}
+      <div class="row">
+				<div class="col-md-12">
+					{{utils.flashed_messages(messages)}}
+				</div>
+      </div>
+    {%- endif %}
+  {%- endwith %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<div class="media">
+					<div class="media-left">
+						<a href="#">
+							<img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" alt="{{ rank['profile_id'] }}">
+						</a>
+					</div>
+					<div class="media-body">
+						<h1 class="media-heading align-self-end">{{ rank['profile_id'] }}</h1>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-xs-4">
+			{% set rank_int = rank['rank'] | int %}
+			<img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}">
+			<h3>{{ rank['mmr'] | int }}</h3>
+			<p>{{ "{:.4f}".format(rank['skill_stdev']) }}</p>
+		</div>
+		<div class="col-xs-4">
+			<h1>K/D</h1>
+			<h3>{{ "{:.3f}".format(stats['rankedpvp_kills:infinite'] / stats['rankedpvp_death:infinite']) }}</h3>
+		</div>
+		<div class="col-xs-4">
+			<h1>W/L</h1>
+			<h3>{{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Weapons</h2>
+			<div class="table-responsive">
+				<table class="table">
+					<tr>
+						<th>Weapon</th>
+						<th>Chosen</th>
+						<th>Fired</th>
+						<th>Hit</th>
+						<th>Kills</th>
+						<th>Headshot</th>
+						<th>DBNO</th>
+						<th>DBNO Assist</th>
+						<th>Death</th>
+					</tr>
+
+					{% for i in range(1,8) %}
+						<tr>
+							<td>{{ weapon_names[i-1] }}</td>
+							<td>{{ stats['weapontypepvp_chosen:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_bulletfired:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_bullethit:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_kills:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_headshot:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_dbno:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_dbnoassists:{}:infinite'.format(i)] }}</td>
+							<td>{{ stats['weapontypepvp_death:{}:infinite'.format(i)] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{{ stats }}
+		</div>
+	</div>
+ </div>
+{%- endblock %}

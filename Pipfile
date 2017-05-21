@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+Flask = "*"
+boto3 = "*"
+requests = "*"
+zappa = "*"
+Flask-Bootstrap = "*"
+flask-nav = "*"
+Flask-Debug = "*"
+Flask-WTF = "*"
