@@ -3,9 +3,18 @@
 {% import "bootstrap/utils.html" as utils %}
 
 {% set weapon_names = [
-    "Assault Rifle", "Submachine Gun", "Marksman Rifle", "Shotgun", "Handgun",
-		"Light Machine Gun", "Machine Pistol"
-	]
+        "Assault Rifle", "Submachine Gun", "Marksman Rifle", "Shotgun", "Handgun",
+        "Light Machine Gun", "Machine Pistol"
+    ]
+%}
+
+{% set rank_names = [
+        "UNRANKED", "COPPER IV", "COPPER III", "COPPER II", "COPPER I",
+        "BRONZE IV", "BRONZE III", "BRONZE II", "BRONZE I",
+        "SILVER IV", "SILVER III", "SILVER II", "SILVER I",
+        "GOLD IV", "GOLD III", "GOLD II", "GOLD I",
+        "PLATINUM III", "PLATINUM II", "PLATINUM I", "DIAMOND" 
+    ]
 %}
 
 {% set rank_icons = [
@@ -30,88 +39,288 @@
         "https://i.imgur.com/Uq3WhzZ.jpg",
         "https://i.imgur.com/xx03Pc5.jpg",
         "https://i.imgur.com/nODE0QI.jpg"
-    ] %}
+    ]
+%}
+
+{% set operators = [
+        { 
+            "name": "HIBANA", 
+            "id": "2:9",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-hibana_275569.png" 
+        },
+        { 
+            "name": "SMOKE", 
+            "id": "2:1",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Smoke_Badge_196198.png" 
+        },
+        { 
+            "name": "KAPKAN", 
+            "id": "4:4",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Kapkan_Badge_229123.png" 
+        },
+        { 
+            "name": "TACHANKA", 
+            "id": "5:4",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Tachanka_Badge_229124.png" 
+        },
+        { 
+            "name": "THERMITE", 
+            "id": "5:2",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Thermite_Badge_196408.png" 
+        },
+        { 
+            "name": "THATCHER", 
+            "id": "5:1",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Thatcher_Badge_196196.png" 
+        },
+        { 
+            "name": "GLAZ", 
+            "id": "2:4",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Glaz_Badge_229122.png" 
+        },
+        { 
+            "name": "BANDIT", 
+            "id": "5:5",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Bandit_Badge_222163.png" 
+        },
+        { 
+            "name": "ROOK", 
+            "id": "3:3",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Rook_Badge_211296.png" 
+        },
+        { 
+            "name": "IQ", 
+            "id": "3:5",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/IQ_Badge_222165.png" 
+        },
+        { 
+            "name": "PULSE", 
+            "id": "4:2",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Pulse_Badge_202497.png" 
+        },
+        { 
+            "name": "MUTE", 
+            "id": "3:1",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Mute_Badge_196195.png" 
+        },
+        { 
+            "name": "VALKYRIE", 
+            "id": "3:7",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-valkyrie_250313.png" 
+        },
+        { 
+            "name": "FROST", 
+            "id": "3:6",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-frost_237595.png" 
+        },
+        { 
+            "name": "DOC", 
+            "id": "2:3",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Doc_Badge_211294.png" 
+        },
+        { 
+            "name": "SLEDGE", 
+            "id": "4:1",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Sledge_Badge_196197.png" 
+        },
+        { 
+            "name": "JAGER", 
+            "id": "4:5",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Jager_Badge_222166.png" 
+        },
+        { 
+            "name": "BLACKBEARD", 
+            "id": "2:7",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-blackbeard_250312.png" 
+        },
+        { 
+            "name": "FUZE", 
+            "id": "3:4",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Fuze_Badge_229121.png" 
+        },
+        { 
+            "name": "ECHO", 
+            "id": "3:9",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-echo_275572.png" 
+        },
+        { 
+            "name": "CAVEIRA", 
+            "id": "3:8",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-caveira_263102.png" 
+        },
+        { 
+            "name": "BLITZ", 
+            "id": "2:5",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Blitz_Badge_222164.png" 
+        },
+        { 
+            "name": "MONTAGNE", 
+            "id": "5:3",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Montagne_Badge_211295.png" 
+        },
+        { 
+            "name": "ASH", 
+            "id": "3:2",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Ash_Badge_196406.png" 
+        },
+        { 
+            "name": "TWITCH", 
+            "id": "4:3",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Twitch_Badge_211297.png" 
+        },
+        { 
+            "name": "CASTLE", 
+            "id": "2:2",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/Castle_Badge_196407.png" 
+        },
+        { 
+            "name": "BUCK", 
+            "id": "2:6",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-buck_237592.png" 
+        },
+        { 
+            "name": "CAPITAO", 
+            "id": "2:8",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-operators-badge-capitao_263100.png" 
+        },
+        { 
+            "name": "JACKAL", 
+            "id": "2:A",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-velvet-shell-badge-jackal_282825.png" 
+        },
+        { 
+            "name": "MIRA", 
+            "id": "3:A",
+            "badge": "https://ubistatic19-a.akamaihd.net/resource/en-GB/game/rainbow6/siege/R6-velvet-shell-badge-mira_282826.png"
+        }
+    ]
+%}
 
 {% block content %}
   <div class="container">
   {%- with messages = get_flashed_messages(with_categories=True) %}
     {%- if messages %}
       <div class="row">
-				<div class="col-md-12">
-					{{utils.flashed_messages(messages)}}
-				</div>
+                <div class="col-md-12">
+                    {{ utils.flashed_messages(messages) }}
+                </div>
       </div>
     {%- endif %}
   {%- endwith %}
-	<div class="row">
-		<div class="col-md-12">
-			<div class="page-header">
-				<div class="media">
-					<div class="media-left">
-						<a href="#">
-							<img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" alt="{{ rank['profile_id'] }}">
-						</a>
-					</div>
-					<div class="media-body">
-						<h1 class="media-heading align-self-end">{{ rank['profile_id'] }}</h1>
-					</div>
-			</div>
-		</div>
-	</div>
-	<div class="row text-center">
-		<div class="col-xs-4">
-			{% set rank_int = rank['rank'] | int %}
-			<img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}">
-			<h3>{{ rank['mmr'] | int }}</h3>
-			<p>{{ "{:.4f}".format(rank['skill_stdev']) }}</p>
-		</div>
-		<div class="col-xs-4">
-			<h1>K/D</h1>
-			<h3>{{ "{:.3f}".format(stats['rankedpvp_kills:infinite'] / stats['rankedpvp_death:infinite']) }}</h3>
-		</div>
-		<div class="col-xs-4">
-			<h1>W/L</h1>
-			<h3>{{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h3>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			<h2>Weapons</h2>
-			<div class="table-responsive">
-				<table class="table">
-					<tr>
-						<th>Weapon</th>
-						<th>Chosen</th>
-						<th>Fired</th>
-						<th>Hit</th>
-						<th>Kills</th>
-						<th>Headshot</th>
-						<th>DBNO</th>
-						<th>DBNO Assist</th>
-						<th>Death</th>
-					</tr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" alt="{{ rank['profile_id'] }}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h1 class="media-heading align-self-end">{{ rank['profile_id'] }}</h1>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-xs-4">
+            {% set rank_int = rank['rank'] | int %}
+            <img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}">
+            {% set rank_int = rank['rank'] | int %}
+            <h3>{{ rank_names[rank_int] }}</h3>
+            <p>{{ rank['mmr'] | int }} {{ "{:.4f}".format(rank['skill_stdev']) }}</p>
+        </div>
+        <div class="col-xs-4">
+            <h1>K/D</h1>
+            <h3>{{ "{:.3f}".format(stats['rankedpvp_kills:infinite'] / stats['rankedpvp_death:infinite']) }}</h3>
+        </div>
+        <div class="col-xs-4">
+            <h1>W/L</h1>
+            <h3>{{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Operators</h2>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>BADGE</th>
+                            <th>Name</th>
+                            <th>Kills</th>
+                            <th>Headshots</th>
+                            <th>Melees</th>
+                            <th>Deaths</th>
+                            <th>DBNO</th>
+                            <th>Played</th>
+                            <th>Win</th>
+                            <th>Lost</th>
+                            <th>Time Played</th>
+                            <th>XP</th>
+                        </tr>
+                    </thead>
 
-					{% for i in range(1,8) %}
-						<tr>
-							<td>{{ weapon_names[i-1] }}</td>
-							<td>{{ stats['weapontypepvp_chosen:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_bulletfired:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_bullethit:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_kills:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_headshot:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_dbno:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_dbnoassists:{}:infinite'.format(i)] }}</td>
-							<td>{{ stats['weapontypepvp_death:{}:infinite'.format(i)] }}</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			{{ stats }}
-		</div>
-	</div>
+                    <tbody>
+                        {% for op in operators %}
+                            <tr>
+                                <td><img class="img-responsive" width="48" src="{{ op['badge'] }}"></td>
+                                <td>{{ op['name'] }}</td>
+                                <td>{{ stats['operatorpvp_kills:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_headshot:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_meleekills:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_death:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_dbno:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_roundplayed:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_roundwon:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_roundlost:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_timeplayed:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stats['operatorpvp_totalxp:{}:infinite'.format(op['id'])] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Weapons</h2>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <th>Weapon</th>
+                        <th>Chosen</th>
+                        <th>Fired</th>
+                        <th>Hit</th>
+                        <th>Kills</th>
+                        <th>Headshot</th>
+                        <th>DBNO</th>
+                        <th>DBNO Assist</th>
+                        <th>Death</th>
+                    </tr>
+
+                    {% for i in range(1,8) %}
+                        <tr>
+                            <td>{{ weapon_names[i-1] }}</td>
+                            <td>{{ stats['weapontypepvp_chosen:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_bulletfired:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_bullethit:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_kills:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_headshot:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_dbno:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_dbnoassists:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stats['weapontypepvp_death:{}:infinite'.format(i)] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ stats }}
+        </div>
+    </div>
  </div>
 {%- endblock %}
