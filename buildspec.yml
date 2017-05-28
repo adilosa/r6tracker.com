@@ -1,0 +1,12 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - pip install pipenv
+      - pipenv install --three
+  pre_build:
+    commands:
+      - pipenv shell
+  build:
+    commands:
+      - zappa update production
