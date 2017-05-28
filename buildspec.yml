@@ -6,7 +6,7 @@ phases:
       - pipenv install --three
   pre_build:
     commands:
-      - pipenv shell
+      - source `pipenv --venv`/bin/activate
   build:
     commands:
       - zappa update production
