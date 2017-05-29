@@ -248,8 +248,8 @@
                 opposite: true
             }],
             tooltip: {
-                headerFormat: '<b>{point.x:%e. %b}</b><br>',
-                pointFormat: 'MMR: {point.y:.2f}'
+                shared: true,
+                headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
             },
             plotOptions: {
                 spline: {
@@ -263,7 +263,7 @@
                 type: 'spline',
                 data: [
                     {% for rank in ranks | reverse %}
-                        {{ rank["mmr"] }},
+                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["mmr"] }} },
                     {% endfor %}
                 ]
             }, {
@@ -272,7 +272,7 @@
                 yAxis: 1,
                 data: [
                     {% for rank in ranks | reverse %}
-                        {{ rank["skill_stdev"] }},
+                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["skill_stdev"] }} },
                     {% endfor %}
                 ]
             }]
@@ -286,7 +286,8 @@
                 title: { text: '' },
             }],
             tooltip: {
-                shared: true
+                shared: true,
+                headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
             },
             plotOptions: {
                 areaspline: {
@@ -298,8 +299,7 @@
                 type: 'areaspline',
                 data: [
                     {% for rank in ranks | reverse %}
-                        {# {{ "[Date.parse(\"{}\"), {}],".format(rank["update_time"], rank["wins"]) | safe }} #}
-                        {{ rank["wins"] }},
+                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["wins"] }} },
                     {% endfor %}
                 ]
             },{
@@ -307,8 +307,7 @@
                 type: 'areaspline',
                 data: [
                     {% for rank in ranks | reverse %}
-                        {# {{ "[Date.parse(\"{}\"), {}],".format(rank["update_time"], rank["mmr"]) | safe }} #}
-                        {{ rank["losses"] }},
+                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["losses"] }} },
                     {% endfor %}
                 ]
             }]
