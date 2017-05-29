@@ -196,6 +196,122 @@
     ]
 %}
 
+{% set rank = ranks[0] %}
+{% set stat = stats[0] %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script type="text/javascript">
+        Highcharts.chart('rank-chart', {
+            title: { text: 'Rank Over Time' },
+            xAxis: { title: { text: '' } },
+            yAxis: [{
+                title: { text: '' },
+                plotBands: [
+                    { label: { verticalAlign: 'middle', text: 'Copper IV' }, to: '1400' },
+                    { label: { verticalAlign: 'middle', text: 'Copper III' }, from: '1400', to: '1499' },
+                    { label: { verticalAlign: 'middle', text: 'Copper II' }, from: '1500', to: '1599' },
+                    { label: { verticalAlign: 'middle', text: 'Copper Star' }, from: '1600', to: '1699' },
+                    { label: { verticalAlign: 'middle', text: 'Bronze IV' }, from: '1700', to: '1799' },
+                    { label: { verticalAlign: 'middle', text: 'Bronze III' }, from: '1800', to: '1899' },
+                    { label: { verticalAlign: 'middle', text: 'Bronze II' }, from: '1900', to: '1999' },
+                    { label: { verticalAlign: 'middle', text: 'Bronze Star' }, from: '2000', to: '2099' },
+                    { label: { verticalAlign: 'middle', text: 'Silver IV' }, from: '2100', to: '2199' },
+                    { label: { verticalAlign: 'middle', text: 'Silver III' }, from: '2200', to: '2299' },
+                    { label: { verticalAlign: 'middle', text: 'Silver II' }, from: '2300', to: '2399' },
+                    { label: { verticalAlign: 'middle', text: 'Silver Star' }, from: '2400', to: '2499' },
+                    { label: { verticalAlign: 'middle', text: 'Gold IV' }, from: '2500', to: '2699' },
+                    { label: { verticalAlign: 'middle', text: 'Gold III' }, from: '2700', to: '2899' },
+                    { label: { verticalAlign: 'middle', text: 'Gold II' }, from: '2900', to: '3099' },
+                    { label: { verticalAlign: 'middle', text: 'Gold Star' }, from: '3100', to: '3299' },
+                    { label: { verticalAlign: 'middle', text: 'Gold IV' }, from: '2500', to: '2699' },
+                    { label: { verticalAlign: 'middle', text: 'Gold III' }, from: '2700', to: '2899' },
+                    { label: { verticalAlign: 'middle', text: 'Gold II' }, from: '2900', to: '3099' },
+                    { label: { verticalAlign: 'middle', text: 'Gold Star' }, from: '3100', to: '3299' },
+                    { label: { verticalAlign: 'middle', text: 'Platinum III' }, from: '3300', to: '3699' },
+                    { label: { verticalAlign: 'middle', text: 'Platinum II' }, from: '3700', to: '4099' },
+                    { label: { verticalAlign: 'middle', text: 'Platinum Star' }, from: '4100', to: '4499' },
+                    { label: { verticalAlign: 'middle', text: 'Diamond' }, from: '4500' }
+                ]
+            }, {
+                gridLineWidth: 0,
+                title: {
+                    text: ''
+                },
+                min: 0,
+                max: 10,
+                opposite: true
+            }],
+            tooltip: {
+                headerFormat: '<b>{point.x:%e. %b}</b><br>',
+                pointFormat: 'MMR: {point.y:.2f}'
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'MMR',
+                type: 'spline',
+                data: [
+                    {% for rank in ranks | reverse %}
+                        {{ rank["mmr"] }},
+                    {% endfor %}
+                ]
+            }, {
+                name: 'Uncertainty',
+                type: 'spline',
+                yAxis: 1,
+                data: [
+                    {% for rank in ranks | reverse %}
+                        {{ rank["skill_stdev"] }},
+                    {% endfor %}
+                ]
+            }]
+        });
+        Highcharts.chart('wl-chart', {
+            chart: { type: 'areaspline' },
+            title: { text: 'W/L' },
+            xAxis: { title: { text: '' } },
+            yAxis: [{
+                gridLineWidth: 0,
+                title: { text: '' },
+            }],
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                areaspline: {
+                    stacking: 'percent',
+                }
+            },
+            series: [{
+                name: 'Wins',
+                type: 'areaspline',
+                data: [
+                    {% for rank in ranks | reverse %}
+                        {# {{ "[Date.parse(\"{}\"), {}],".format(rank["update_time"], rank["wins"]) | safe }} #}
+                        {{ rank["wins"] }},
+                    {% endfor %}
+                ]
+            },{
+                name: 'Losses',
+                type: 'areaspline',
+                data: [
+                    {% for rank in ranks | reverse %}
+                        {# {{ "[Date.parse(\"{}\"), {}],".format(rank["update_time"], rank["mmr"]) | safe }} #}
+                        {{ rank["losses"] }},
+                    {% endfor %}
+                ]
+            }]
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
   <div class="container">
   {%- with messages = get_flashed_messages(with_categories=True) %}
@@ -226,17 +342,24 @@
         <div class="col-xs-4">
             {% set rank_int = rank['rank'] | int %}
             <img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}">
-            {% set rank_int = rank['rank'] | int %}
             <h3>{{ rank_names[rank_int] }}</h3>
             <p>{{ rank['mmr'] | int }} {{ "{:.4f}".format(rank['skill_stdev']) }}</p>
         </div>
         <div class="col-xs-4">
             <h1>K/D</h1>
-            <h3>{{ "{:.3f}".format(stats['rankedpvp_kills:infinite'] / stats['rankedpvp_death:infinite']) }}</h3>
+            <h3>{{ "{:.3f}".format(stat['rankedpvp_kills:infinite'] / stat['rankedpvp_death:infinite']) }}</h3>
         </div>
         <div class="col-xs-4">
             <h1>W/L</h1>
             <h3>{{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h3>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6">
+            <div id="rank-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="wl-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
     <div class="row">
@@ -266,16 +389,16 @@
                             <tr>
                                 <td><img class="img-responsive" width="48" src="{{ op['badge'] }}"></td>
                                 <td>{{ op['name'] }}</td>
-                                <td>{{ stats['operatorpvp_kills:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_headshot:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_meleekills:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_death:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_dbno:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_roundplayed:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_roundwon:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_roundlost:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_timeplayed:{}:infinite'.format(op['id'])] }}</td>
-                                <td>{{ stats['operatorpvp_totalxp:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_kills:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_headshot:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_meleekills:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_death:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_dbno:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_roundplayed:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_roundwon:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_roundlost:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_timeplayed:{}:infinite'.format(op['id'])] }}</td>
+                                <td>{{ stat['operatorpvp_totalxp:{}:infinite'.format(op['id'])] }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -303,23 +426,18 @@
                     {% for i in range(1,8) %}
                         <tr>
                             <td>{{ weapon_names[i-1] }}</td>
-                            <td>{{ stats['weapontypepvp_chosen:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_bulletfired:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_bullethit:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_kills:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_headshot:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_dbno:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_dbnoassists:{}:infinite'.format(i)] }}</td>
-                            <td>{{ stats['weapontypepvp_death:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_chosen:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_bulletfired:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_bullethit:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_kills:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_headshot:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_dbno:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_dbnoassists:{}:infinite'.format(i)] }}</td>
+                            <td>{{ stat['weapontypepvp_death:{}:infinite'.format(i)] }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            {{ stats }}
         </div>
     </div>
  </div>
