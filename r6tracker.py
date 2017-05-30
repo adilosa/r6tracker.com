@@ -2,7 +2,6 @@ from flask import Flask, jsonify, render_template
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View
-from flask.ext.cache import Cache
 
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -17,7 +16,6 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 Bootstrap(app)
 nav = Nav(app)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
@@ -30,7 +28,6 @@ profileIds = {
 }
 
 
-@cache.memoize(timeout=120)
 def rank(profileId, limit=1):
     return [
         item['stats'] for item in boto3.resource('dynamodb').Table("seigestats-players").query(
@@ -38,7 +35,6 @@ def rank(profileId, limit=1):
         )['Items'] if item['stats']['update_time'] > '1971'
     ]
 
-@cache.memoize(timeout=120)
 def stats(profileId, limit=1):
     return [
         item['stats'] for item in boto3.resource('dynamodb').Table("siegestats-stats").query(

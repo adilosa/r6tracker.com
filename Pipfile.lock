@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7b7bb83e7e723fe7f16f37c86f9323f8fefbb582a422b31176fe32bb88037f4c"
+            "sha256": "2d7c7280e1187f742089da25f2df7d2623e628c2da3240442c3ad1880c90ccc8"
         },
         "requires": {},
         "sources": [
@@ -19,6 +19,10 @@
         "Flask-Bootstrap": {
             "hash": "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8",
             "version": "==3.3.7.1"
+        },
+        "Flask-Cache": {
+            "hash": "sha256:90126ca9bc063854ef8ee276e95d38b2b4ec8e45fd77d5751d37971ee27c7ef4",
+            "version": "==0.13.1"
         },
         "Flask-Debug": {
             "hash": "sha256:dc95339f802d3158ff9cc088f947382209d30942b86f79b221e72141b863f821",
@@ -65,8 +69,16 @@
             "version": "==1.4.4"
         },
         "botocore": {
-            "hash": "sha256:b94d70bc569b545335b4e86e88a3b917eafb5762186d5dc9c2c361f1aa8cd286",
-            "version": "==1.5.52"
+            "hash": "sha256:643d6d5587011ef22aff997bfc2b5ec549fbdb3d7d63b0d54fcb6d30f30d5b75",
+            "version": "==1.5.56"
+        },
+        "certifi": {
+            "hash": "sha256:f4318671072f030a33c7ca6acaef720ddd50ff124d1388e50c1bda4cbd6d7010",
+            "version": "==2017.4.17"
+        },
+        "chardet": {
+            "hash": "sha256:8da3f329e2c5779247f4cff7081512c531731ef6a9c6ef78084e8ed8d18226c7",
+            "version": "==3.0.3"
         },
         "click": {
             "hash": "sha256:29f99fc6125fbc931b758dc053b3114e55c77a6e4c6c3a2674a2dc986016381d",
@@ -99,6 +111,10 @@
         "hjson": {
             "hash": "sha256:877c27be17eafd14d71555ed97f79b4bd776e776b71fee807be2927f9cf8a651",
             "version": "==2.0.2"
+        },
+        "idna": {
+            "hash": "sha256:cc19709fd6d0cbfed39ea875d29ba6d4e22c0cebc510a76d6302a28385e8bb70",
+            "version": "==2.5"
         },
         "inflection": {
             "hash": "sha256:18ea7fb7a7d152853386523def08736aa8c32636b047ade55f7578c4edeb16ca",
@@ -133,8 +149,8 @@
             "version": "==1.2.4"
         },
         "requests": {
-            "hash": "sha256:3b39cde35be51762885631cf586f4dc2284951b44d479a4454020758d767cc2f",
-            "version": "==2.14.2"
+            "hash": "sha256:baf701b4a9d4cbe40169e8ab77816f7abadbad502ba459c30f7a2bc138e4d612",
+            "version": "==2.17.3"
         },
         "s3transfer": {
             "hash": "sha256:bc52f38637f37572ae180c08a2dd87a4825b46713797633aab6e1a42d6b2b8ff",
@@ -155,6 +171,10 @@
         "troposphere": {
             "hash": "sha256:d35d95599d418a6ea566a8b413e90e514f92d7047571c390692a8aa7964c561b",
             "version": "==1.9.3"
+        },
+        "urllib3": {
+            "hash": "sha256:8ed6d5c1ff9d6ba84677310060d6a3a78ca3072ce0684cb3c645023009c114b1",
+            "version": "==1.21.1"
         },
         "visitor": {
             "hash": "sha256:2c737903b2b6864ebc6167eef7cf3b997126f1aa94bdf590f90f1436d23e480a",
