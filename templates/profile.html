@@ -294,23 +294,26 @@
                     stacking: 'percent',
                 }
             },
-            series: [{
-                name: 'Wins',
-                type: 'areaspline',
-                data: [
-                    {% for rank in ranks | reverse %}
-                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["wins"] }} },
-                    {% endfor %}
-                ]
-            },{
-                name: 'Losses',
-                type: 'areaspline',
-                data: [
-                    {% for rank in ranks | reverse %}
-                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["losses"] }} },
-                    {% endfor %}
-                ]
-            }]
+            series: [
+                {
+                    name: 'Losses',
+                    type: 'areaspline',
+                    data: [
+                        {% for rank in ranks | reverse %}
+                            { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["losses"] }} },
+                        {% endfor %}
+                    ]
+                },
+                {
+                    name: 'Wins',
+                    type: 'areaspline',
+                    data: [
+                        {% for rank in ranks | reverse %}
+                            { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["wins"] }} },
+                        {% endfor %}
+                    ]
+                }
+            ]
         });
     </script>
 {% endblock %}
