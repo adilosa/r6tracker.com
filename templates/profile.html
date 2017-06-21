@@ -318,6 +318,39 @@
     </script>
     <script type="text/javascript">
         {% for type in operators %}
+            Highcharts.chart('{{ type }}-operator-picks-chart', {
+                chart: { type: 'areaspline' },
+                title: { text: '{{ type | title }} Operator Picks' },
+                xAxis: { title: { text: '' } },
+                yAxis: [{
+                    gridLineWidth: 0,
+                    title: { text: '' },
+                }],
+                tooltip: {
+                    shared: true,
+                    headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
+                },
+                plotOptions: {
+                    areaspline: {
+                        stacking: 'percent',
+                    }
+                },
+                series: [
+                    {% for op in operators[type] %}
+                        {
+                            name: '{{ op['name'] }}',
+                            type: 'areaspline',
+                            data: [
+                                {% for s in stats | reverse %}
+                                    { y: {{ s.get('operatorpvp_roundplayed:{}:infinite'.format(op['id']), 0) - stats[-1].get('operatorpvp_roundplayed:{}:infinite'.format(op['id']), 0) }} },
+                                {% endfor %}
+                            ]
+                        },
+                    {% endfor %}
+                ]
+           });
+        {% endfor %}
+        {% for type in operators %}
             Highcharts.chart('{{ type }}-operator-wins-chart', {
                 chart: { type: 'areaspline' },
                 title: { text: '{{ type | title }} Operator Wins' },
@@ -342,7 +375,40 @@
                             type: 'areaspline',
                             data: [
                                 {% for s in stats | reverse %}
-                                    { y: {{ s.get('operatorpvp_roundplayed:{}:infinite'.format(op['id']), 0) - stats[-1].get('operatorpvp_roundplayed:{}:infinite'.format(op['id']), 0) }} },
+                                    { y: {{ s.get('operatorpvp_roundwon:{}:infinite'.format(op['id']), 0) - stats[-1].get('operatorpvp_roundwon:{}:infinite'.format(op['id']), 0) }} },
+                                {% endfor %}
+                            ]
+                        },
+                    {% endfor %}
+                ]
+           });
+        {% endfor %}
+        {% for type in operators %}
+            Highcharts.chart('{{ type }}-operator-losses-chart', {
+                chart: { type: 'areaspline' },
+                title: { text: '{{ type | title }} Operator Losses' },
+                xAxis: { title: { text: '' } },
+                yAxis: [{
+                    gridLineWidth: 0,
+                    title: { text: '' },
+                }],
+                tooltip: {
+                    shared: true,
+                    headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
+                },
+                plotOptions: {
+                    areaspline: {
+                        stacking: 'percent',
+                    }
+                },
+                series: [
+                    {% for op in operators[type] %}
+                        {
+                            name: '{{ op['name'] }}',
+                            type: 'areaspline',
+                            data: [
+                                {% for s in stats | reverse %}
+                                    { y: {{ s.get('operatorpvp_roundlost:{}:infinite'.format(op['id']), 0) - stats[-1].get('operatorpvp_roundlost:{}:infinite'.format(op['id']), 0) }} },
                                 {% endfor %}
                             ]
                         },
@@ -406,7 +472,21 @@
     <div class="row text-center">
        {% for type in operators %}
             <div class="col-md-6">
+                <div id="{{ type }}-operator-picks-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+       {% endfor %}
+    </div>
+    <div class="row text-center">
+       {% for type in operators %}
+            <div class="col-md-6">
                 <div id="{{ type }}-operator-wins-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+       {% endfor %}
+    </div>
+    <div class="row text-center">
+       {% for type in operators %}
+            <div class="col-md-6">
+                <div id="{{ type }}-operator-losses-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
        {% endfor %}
     </div>
