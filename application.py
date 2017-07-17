@@ -8,14 +8,14 @@ from boto3.dynamodb.conditions import Key
 import requests
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-app.config['DEBUG'] = True
-app.jinja_env.auto_reload = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+application.config['DEBUG'] = True
+application.jinja_env.auto_reload = True
+application.config['TEMPLATES_AUTO_RELOAD'] = True
 
-Bootstrap(app)
-nav = Nav(app)
+Bootstrap(application)
+nav = Nav(application)
 
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
@@ -43,7 +43,7 @@ def stats(profileId, limit=1):
     ]
 
 
-@app.route("/")
+@application.route("/")
 def overview():
     return render_template(
         "index.html", profiles=[
@@ -51,7 +51,7 @@ def overview():
         ]
     )
 
-@app.route("/profiles/<profileId>")
+@application.route("/profiles/<profileId>")
 def profile(profileId):
     return render_template(
         "profile.html", ranks=rank(profileId, limit=100), stats=stats(profileId, limit=100)
@@ -59,4 +59,4 @@ def profile(profileId):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    application.run(port=80)
