@@ -30,14 +30,14 @@ profileIds = {
 
 def rank(profileId, limit=1):
     return [
-        item['stats'] for item in boto3.resource('dynamodb').Table("seigestats-players").query(
+        item['stats'] for item in boto3.resource('dynamodb', region_name='us-west-2').Table("seigestats-players").query(
             Limit=limit, KeyConditionExpression=Key('profileId').eq(str(profileId)), ScanIndexForward=False
         )['Items'] if item['stats']['update_time'] > '1971'
     ]
 
 def stats(profileId, limit=1):
     return [
-        item['stats'] for item in boto3.resource('dynamodb').Table("siegestats-stats").query(
+        item['stats'] for item in boto3.resource('dynamodb', region_name='us-west-2').Table("siegestats-stats").query(
             Limit=limit, KeyConditionExpression=Key('profileId').eq(str(profileId)), ScanIndexForward=False
         )['Items']
     ]
