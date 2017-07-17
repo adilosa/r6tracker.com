@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+    r6trackercom:
+        Type: AWS::ElasticBeanstalk::Application
+    Environment:
+        Type: AWS::ElasticBeanstalk::Environment
+        Properties:
+            ApplicationName: { Ref: r6trackercom }
+            SolutionStackName: 64bit Amazon Linux 2017.03 v2.4.1 running Python 3.4
+            OptionSettings:
+              -
+                Namespace: aws:autoscaling:launchconfiguration
+                OptionName: InstanceType
+                Value: t2.micro
+              -
+                Namespace: aws:autoscaling:launchconfiguration
+                OptionName: IamInstanceProfile
+                Value: "aws-elasticbeanstalk-ec2-role"
+            Tier:
+                Name: "WebServer"
+                Type: "Standard"
+
+
