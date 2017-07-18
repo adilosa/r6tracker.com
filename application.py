@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View
+from flask.ext.cache import Cache
 
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -10,12 +11,14 @@ import requests
 
 application = Flask(__name__, instance_relative_config=True)
 
+application.config.from_object('config')
 application.config.from_pyfile('flask.cfg', silent=True)
 application.jinja_env.auto_reload = True
 application.config['TEMPLATES_AUTO_RELOAD'] = True
 
 Bootstrap(application)
 nav = Nav(application)
+cache = Cache(application, config={'CACHE_TYPE': 'simple'})
 
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
@@ -28,6 +31,7 @@ profileIds = {
 }
 
 
+@cache.memoize(60)
 def rank(profileId, limit=1):
     return [
         item['stats'] for item in boto3.resource('dynamodb', region_name='us-west-2').Table("seigestats-players").query(
@@ -35,12 +39,19 @@ def rank(profileId, limit=1):
         )['Items'] if item['stats']['update_time'] > '1971'
     ]
 
+
+@cache.memoize(60)
 def stats(profileId, limit=1):
     return [
-        item['stats'] for item in boto3.resource('dynamodb', region_name='us-west-2').Table("siegestats-stats").query(
+        augmented_stat(item['stats']) for item in boto3.resource('dynamodb', region_name='us-west-2').Table("siegestats-stats").query(
             Limit=limit, KeyConditionExpression=Key('profileId').eq(str(profileId)), ScanIndexForward=False
         )['Items']
     ]
+
+
+def augmented_stat(stat):
+    stat['operatorpvp_roundplayed:infinite'] = sum([val for key, val in stat.items() if "operatorpvp_roundplayed:" in key])
+    return stat
 
 
 @application.route("/")
@@ -51,6 +62,7 @@ def overview():
         ]
     )
 
+
 @application.route("/profiles/<profileId>")
 def profile(profileId):
     return render_template(
@@ -60,3 +72,4 @@ def profile(profileId):
 
 if __name__ == "__main__":
     application.run()
+
