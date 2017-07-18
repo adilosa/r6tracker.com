@@ -8,9 +8,9 @@ from boto3.dynamodb.conditions import Key
 import requests
 
 
-application = Flask(__name__)
+application = Flask(__name__, instance_relative_config=True)
 
-application.config['DEBUG'] = True
+application.config.from_pyfile('flask.cfg', silent=True)
 application.jinja_env.auto_reload = True
 application.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -59,4 +59,4 @@ def profile(profileId):
 
 
 if __name__ == "__main__":
-    application.run(port=80)
+    application.run()
