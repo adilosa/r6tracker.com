@@ -34,6 +34,13 @@
 {% block styles -%}
     {{super()}}  {# do not forget to call super or Bootstrap's own stylesheets
                     will disappear! #}
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/cyborg/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+{% endblock %}
+
+{% block body_attribs %}
+    {{ super() }}
+    class="dark-background light-text"
 {% endblock %}
 
 {# Finally, round things out with navigation #}

@@ -206,6 +206,7 @@
 {% block scripts %}
     {{ super() }}
     <script src="https://code.highcharts.com/highcharts.src.js"></script>	
+    <script src="{{ url_for('static', filename='highcharts-dark-unica.js') }}"></script>
     <script type="text/javascript">
         Highcharts.chart('rank-chart', {
             title: { text: 'Rank' },
