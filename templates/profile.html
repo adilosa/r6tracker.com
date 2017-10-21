@@ -379,6 +379,11 @@
            });
         {% endfor %}
     </script>
+    <script>
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -438,6 +443,11 @@
             </div>
        {% endfor %}
     </div>
+
+    {% macro hrmin(sec) %}
+        {{ '%02d' | format((sec / 3600) | int) }}h{{ '%02d' | format((sec / 60 % 60) | round | int) }}m
+    {% endmacro %}
+
     <div class="row">
         <div class="col-xs-12">
             <h2>Operators</h2>
@@ -472,7 +482,10 @@
                                     <td>{{ stat.get('operatorpvp_roundplayed:{}:infinite'.format(op['id']), 0) }}</td>
                                     <td>{{ stat.get('operatorpvp_roundwon:{}:infinite'.format(op['id']), 0) }}</td>
                                     <td>{{ stat.get('operatorpvp_roundlost:{}:infinite'.format(op['id']), 0) }}</td>
-                                    <td>{{ stat.get('operatorpvp_timeplayed:{}:infinite'.format(op['id']), 0) }}</td>
+                                    {% set timeplayed = stat.get('operatorpvp_timeplayed:{}:infinite'.format(op['id']), 0) %}
+                                    <td data-original-title="{{ timeplayed }}" data-container="body" data-toggle="tooltip" data-placement="top">
+                                        {{ hrmin(timeplayed) }}
+                                    </td>
                                     <td>{{ stat.get('operatorpvp_totalxp:{}:infinite'.format(op['id']), 0) }}</td>
                                 </tr>
                             {% endfor %}
