@@ -23,11 +23,11 @@ cache = Cache(application, config={'CACHE_TYPE': 'simple'})
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
 
-profileIds = { 
-    "ChaosNox": "86fb0498-0b1b-4d21-b621-310cab9bec15",
-    "UnfairRainbow": "bcf0ef91-9084-47d9-860d-91a2fdbac260",
-    "KrakenMonkey": "ec3061f9-968f-4443-b760-0c3dc354c9c2",
-    "whitew0lf2112": "42bff726-304e-44dd-809f-7d0f312a9300"
+profileNames = {
+    "86fb0498-0b1b-4d21-b621-310cab9bec15": "ChaosNox",
+    "bcf0ef91-9084-47d9-860d-91a2fdbac260": "UnfairRainbow",
+    "ec3061f9-968f-4443-b760-0c3dc354c9c2": "KrakenMonkey",
+    "42bff726-304e-44dd-809f-7d0f312a9300": "whitew0lf2112"
 }
 
 
@@ -58,7 +58,7 @@ def augmented_stat(stat):
 def overview():
     return render_template(
         "index.html", profiles=[
-            { "name": name, "profileId": pid, "rank": rank(pid)[0] } for name, pid in profileIds.items()
+            { "name": name, "profileId": pid, "rank": rank(pid)[0] } for pid, name in profileNames.items()
         ]
     )
 
@@ -66,7 +66,7 @@ def overview():
 @application.route("/profiles/<profileId>")
 def profile(profileId):
     return render_template(
-        "profile.html", ranks=rank(profileId, limit=100), stats=stats(profileId, limit=100)
+        "profile.html", ranks=rank(profileId, limit=100), stats=stats(profileId, limit=100), name=profileNames[profileId]
     )
 
 

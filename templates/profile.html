@@ -394,15 +394,15 @@
   {%- endwith %}
     <div class="row">
         <div class="col-xs-12">
-            <div class="page-header">
+            <div class="page-header" style="margin-top: 0">
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" style="max-width: 146px;" alt="{{ rank['profile_id'] }}">
+                            <img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" style="max-width: 120px;" alt="{{ rank['profile_id'] }}">
                         </a>
                     </div>
-                    <div class="media-body">
-                        <h1 class="media-heading align-self-end">{{ rank['profile_id'] }}</h1>
+                    <div class="media-body" style="vertical-align: bottom;">
+                        <h1 class="media-heading align-self-end" style="padding-left: 10px;">{{ name }}</h1>
                     </div>
                 </div>
             </div>
@@ -443,11 +443,10 @@
             <h2>Operators</h2>
             {% for optype in operators %} 
                 <div class="table-responsive">
-                    <table class="table table-condensed table-hover">
+                    <table class="table table-condensed table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Badge</th>
-                                <th>Name</th>
+                                <th>Operator</th>
                                 <th>Kills</th>
                                 <th>Headshots</th>
                                 <th>Melees</th>
@@ -464,8 +463,7 @@
                         <tbody>
                             {% for op in operators[optype] %}
                                 <tr>
-                                    <td><img class="img-responsive" width="48" src="{{ op['badge'] }}"></td>
-                                    <td>{{ op['name'] }}</td>
+                                    <td><img class="img-responsive" width="48" src="{{ op['badge'] }}"> {{ op['name'] }}</td>
                                     <td>{{ stat.get('operatorpvp_kills:{}:infinite'.format(op['id']), 0) }}</td>
                                     <td>{{ stat.get('operatorpvp_headshot:{}:infinite'.format(op['id']), 0) }}</td>
                                     <td>{{ stat.get('operatorpvp_meleekills:{}:infinite'.format(op['id']), 0) }}</td>
@@ -488,7 +486,7 @@
         <div class="col-xs-12">
             <h2>Weapons</h2>
             <div class="table-responsive">
-                <table class="table table-condensed table-hover">
+                <table class="table table-condensed table-hover table-striped">
                     <tr>
                         <th>Weapon</th>
                         <th>Chosen</th>
