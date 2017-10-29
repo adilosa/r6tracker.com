@@ -335,7 +335,7 @@
             plotOptions: {
                 spline: {
                     marker: {
-                        enabled: false
+                        enabled: true
                     }
                 }
             },
@@ -344,16 +344,7 @@
                 type: 'spline',
                 data: [
                     {% for rank in ranks | reverse %}
-                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["mmr"] }} },
-                    {% endfor %}
-                ]
-            }, {
-                name: 'Uncertainty',
-                type: 'spline',
-                yAxis: 1,
-                data: [
-                    {% for rank in ranks | reverse %}
-                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["skill_stdev"] }} },
+                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["mmr"] }}, uncertainty: {{ rank["skill_stdev"] }} },
                     {% endfor %}
                 ]
             }],
