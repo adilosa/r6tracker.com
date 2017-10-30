@@ -48,12 +48,12 @@ def _datafile(key):
 
 @cache.memoize(60)
 def rank(profileId):
-    return [item['stats'] for item in _datafile(f'profiles/{profileId}/player.jsonl.gz')]
+    return [item['stats'] for item in _datafile('profiles/{}/player.jsonl.gz'.format(profileId))]
 
 
 @cache.memoize(60)
 def stats(profileId):
-    return [augmented_stat(item['stats']) for item in _datafile(f'profiles/{profileId}/stats.jsonl.gz')]
+    return [augmented_stat(item['stats']) for item in _datafile('profiles/{}/stats.jsonl.gz'.format(profileId))]
 
 
 def augmented_stat(stat):
