@@ -210,7 +210,11 @@
     <script type="text/javascript">
         Highcharts.chart('rank-chart', {
             title: { text: 'Rank' },
-            xAxis: { title: { text: '' }, visible: false},
+            xAxis: {
+                title: { text: '' }, 
+                visible: false,
+                breaks: []
+            },
             yAxis: [
                 {
                     gridLineWidth: 0,
@@ -343,7 +347,7 @@
                 name: 'MMR',
                 type: 'spline',
                 data: [
-                    {% for rank in ranks | reverse %}
+                    {% for rank in ranks[:100] | reverse %}
                         { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["mmr"] }}, uncertainty: {{ rank["skill_stdev"] }} },
                     {% endfor %}
                 ]
@@ -372,7 +376,7 @@
                     name: 'Losses',
                     type: 'areaspline',
                     data: [
-                        {% for rank in ranks | reverse %}
+                        {% for rank in ranks[:100] | reverse %}
                             { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["losses"] }} },
                         {% endfor %}
                     ]
@@ -381,7 +385,7 @@
                     name: 'Wins',
                     type: 'areaspline',
                     data: [
-                        {% for rank in ranks | reverse %}
+                        {% for rank in ranks[:100] | reverse %}
                             { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["wins"] }} },
                         {% endfor %}
                     ]

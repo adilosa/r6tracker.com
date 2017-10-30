@@ -7,6 +7,7 @@ from flask.ext.cache import Cache
 import boto3
 from boto3.dynamodb.conditions import Key
 import requests
+import gzip, json
 
 
 application = Flask(__name__, instance_relative_config=True)
@@ -30,23 +31,29 @@ profileNames = {
     "42bff726-304e-44dd-809f-7d0f312a9300": "whitew0lf2112"
 }
 
-
-@cache.memoize(60)
-def rank(profileId, limit=1):
-    return [
-        item['stats'] for item in boto3.resource('dynamodb', region_name='us-west-2').Table("seigestats-players").query(
-            Limit=limit, KeyConditionExpression=Key('profileId').eq(str(profileId)), ScanIndexForward=False
-        )['Items'] if item['stats']['update_time'] > '1971'
-    ]
+s3 = boto3.resource('s3')
 
 
 @cache.memoize(60)
-def stats(profileId, limit=1):
-    return [
-        augmented_stat(item['stats']) for item in boto3.resource('dynamodb', region_name='us-west-2').Table("siegestats-stats").query(
-            Limit=limit, KeyConditionExpression=Key('profileId').eq(str(profileId)), ScanIndexForward=False
-        )['Items']
-    ]
+def _datafile(key):
+    print(key)
+    return sorted(
+        [
+            json.loads(line)
+            for line in gzip.decompress(s3.Object('r6tracker', key).get()['Body'].read()).decode('utf-8').split('\n')
+        ],
+        key=lambda i: i['update_time'],
+        reverse=True
+    )
+
+@cache.memoize(60)
+def rank(profileId):
+    return [item['stats'] for item in _datafile(f'profiles/{profileId}/player.jsonl.gz')]
+
+
+@cache.memoize(60)
+def stats(profileId):
+    return [augmented_stat(item['stats']) for item in _datafile(f'profiles/{profileId}/stats.jsonl.gz')]
 
 
 def augmented_stat(stat):
@@ -66,7 +73,7 @@ def overview():
 @application.route("/profiles/<profileId>")
 def profile(profileId):
     return render_template(
-        "profile.html", ranks=rank(profileId, limit=100), stats=stats(profileId, limit=100), name=profileNames[profileId]
+        "profile.html", ranks=rank(profileId), stats=stats(profileId), name=profileNames[profileId]
     )
 
 
