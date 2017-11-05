@@ -15,7 +15,7 @@ Flask-Debug==0.4.3
 flask-nav==0.6
 Flask-WTF==0.14.2
 future==0.16.0
-futures==3.1.1
+futures==2.2.0
 hjson==2.0.2
 idna==2.5
 inflection==0.3.1
