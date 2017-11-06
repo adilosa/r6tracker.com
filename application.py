@@ -9,6 +9,7 @@ from boto3.dynamodb.conditions import Key
 import requests
 import gzip, json
 from collections import OrderedDict
+from io import BytesIO
 
 
 application = Flask(__name__, instance_relative_config=True)
@@ -20,7 +21,7 @@ application.config['TEMPLATES_AUTO_RELOAD'] = True
 
 Bootstrap(application)
 nav = Nav(application)
-cache = Cache(application, config={'CACHE_TYPE': 'simple'})
+cache = Cache(application, config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/tmp/'})
 
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
@@ -35,13 +36,17 @@ profileNames = OrderedDict([
 s3 = boto3.resource('s3')
 
 
+@cache.memoize()
+def _cached_datafile(key, etag):
+    return BytesIO(s3.Object('r6tracker', key).get()['Body'].read())
+
+
 @cache.memoize(60)
 def _datafile(key):
-    print(key)
     return sorted(
         [
-            json.loads(line)
-            for line in gzip.decompress(s3.Object('r6tracker', key).get()['Body'].read()).decode('utf-8').split('\n')
+            json.loads(line.decode('utf-8'))
+            for line in gzip.GzipFile(fileobj=_cached_datafile(key, s3.Object('r6tracker', key).e_tag))
         ],
         key=lambda i: i['update_time'],
         reverse=True
