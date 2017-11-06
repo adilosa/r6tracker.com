@@ -8,6 +8,7 @@ import boto3
 from boto3.dynamodb.conditions import Key
 import requests
 import gzip, json
+from collections import OrderedDict
 
 
 application = Flask(__name__, instance_relative_config=True)
@@ -24,12 +25,12 @@ cache = Cache(application, config={'CACHE_TYPE': 'simple'})
 nav.register_element('frontend_top', Navbar(View('r6tracker', '.overview')))
 
 
-profileNames = {
-    "86fb0498-0b1b-4d21-b621-310cab9bec15": "ChaosNox",
-    "bcf0ef91-9084-47d9-860d-91a2fdbac260": "UnfairRainbow",
-    "ec3061f9-968f-4443-b760-0c3dc354c9c2": "KrakenMonkey",
-    "42bff726-304e-44dd-809f-7d0f312a9300": "whitew0lf2112"
-}
+profileNames = OrderedDict([
+    ("86fb0498-0b1b-4d21-b621-310cab9bec15", "ChaosNox"),
+    ("ec3061f9-968f-4443-b760-0c3dc354c9c2", "KrakenMonkey"),
+    ("bcf0ef91-9084-47d9-860d-91a2fdbac260", "UnfairRainbow"),
+    ("42bff726-304e-44dd-809f-7d0f312a9300", "whitew0lf2112")
+])
 
 s3 = boto3.resource('s3')
 
