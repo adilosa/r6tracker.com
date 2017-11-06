@@ -463,45 +463,46 @@
     </script>
 {% endblock %}
 
+{% block styles %}
+    {{ super() }}
+    <style type="text/css">
+        @media (min-width: 768px){
+            #profile-name {
+                text-align: left;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
   <div class="container">
   {%- with messages = get_flashed_messages(with_categories=True) %}
     {%- if messages %}
       <div class="row">
-                <div class="col-md-12">
-                    {{ utils.flashed_messages(messages) }}
-                </div>
+        <div class="col-md-12">
+            {{ utils.flashed_messages(messages) }}
+        </div>
       </div>
     {%- endif %}
   {%- endwith %}
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header" style="margin-top: 0">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" style="max-width: 120px;" alt="{{ rank['profile_id'] }}">
-                        </a>
-                    </div>
-                    <div class="media-body" style="vertical-align: bottom;">
-                        <h1 class="media-heading align-self-end" style="padding-left: 10px;">{{ name }}</h1>
-                    </div>
-                </div>
-            </div>
+    <div class="row text-center page-header">
+        <div class="col-sm-2">
+            <a href="#">
+                <img class="img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" style="" alt="{{ rank['profile_id'] }}">
+            </a>
         </div>
-    </div>
-    <div class="row text-center">
+        <div id="profile-name" class="col-sm-4">
+            <h2>{{ name }}</h2>
+        </div>
         {% set rank_int = rank['rank'] | int %}
-        <div class="col-xs-3">
+        <div class="col-sm-2">
             <img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}" style="max-width:80px;">
-        </div>
-        <div class="col-xs-3">
             <h4>{{ rank_names[rank_int] }}</h4>
         </div>
-        <div class="col-xs-3">
+        <div class="col-sm-2">
             <h4>µ: {{ rank['mmr'] | int }}<br>σ: {{ "{:.3f}".format(rank['skill_stdev']) }}</h4>
         </div>
-        <div class="col-xs-3">
+        <div class="col-sm-2">
             <h4>W/L: {{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h4>
         </div>
     </div>
