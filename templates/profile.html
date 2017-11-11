@@ -484,7 +484,7 @@
       </div>
     {%- endif %}
   {%- endwith %}
-    <div class="row text-center page-header">
+    <div class="row text-center">
         <div class="col-sm-2">
             <a href="#">
                 <img class="img-thumbnail img-responsive" src="https://ubisoft-avatars.akamaized.net/{{ rank['profile_id'] }}/default_146_146.png?appId=39baebad-39e5-4552-8c25-2c9b919064e2" style="" alt="{{ rank['profile_id'] }}">
@@ -494,14 +494,18 @@
             <h2>{{ name }}</h2>
         </div>
         {% set rank_int = rank['rank'] | int %}
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <img class="img-responsive center-block" src="{{ rank_icons[rank_int] }}" style="max-width:80px;">
-            <h4>{{ rank_names[rank_int] }}</h4>
+            <h4>
+                {{ rank_names[rank_int] }}
+            </h4>
+            <h4>
+                µ: {{ rank['mmr'] | int }}
+                <br>
+                σ: {{ "{:.3f}".format(rank['skill_stdev']) }}
+            </h4>
         </div>
-        <div class="col-sm-2">
-            <h4>µ: {{ rank['mmr'] | int }}<br>σ: {{ "{:.3f}".format(rank['skill_stdev']) }}</h4>
-        </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <h4>W/L: {{ "{:.3f}".format(rank['wins'] / rank['losses']) }}</h4>
         </div>
     </div>
