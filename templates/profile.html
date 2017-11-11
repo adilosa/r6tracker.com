@@ -208,6 +208,17 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="{{ url_for('static', filename='highcharts-dark-unica.js') }}"></script>
     <script type="text/javascript">
+        var data = [
+            {% for rank in ranks[:100] | reverse %}
+                {
+                    name: Date.parse('{{ rank["update_time"] }}'),
+                    mmr: {{ rank["mmr"] }},
+                    uncertainty: {{ rank["skill_stdev"] }},
+                    losses: {{ rank["losses"] }},
+                    wins: {{ rank["wins"] }}
+                },
+            {% endfor %}
+        ]
         Highcharts.chart('rank-chart', {
             title: { text: 'Rank' },
             xAxis: {
@@ -346,11 +357,7 @@
             series: [{
                 name: 'MMR',
                 type: 'spline',
-                data: [
-                    {% for rank in ranks[:100] | reverse %}
-                        { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["mmr"] }}, uncertainty: {{ rank["skill_stdev"] }} },
-                    {% endfor %}
-                ]
+                data: data.map((point) => { return { 'name': point.name, 'y': point.mmr }; } )
             }],
             legend: { enabled: false }
         });
@@ -375,20 +382,12 @@
                 {
                     name: 'Losses',
                     type: 'areaspline',
-                    data: [
-                        {% for rank in ranks[:100] | reverse %}
-                            { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["losses"] }} },
-                        {% endfor %}
-                    ]
+                    data: data.map((point) => { return { 'name': point.name, 'y': point.losses }; } )
                 },
                 {
                     name: 'Wins',
                     type: 'areaspline',
-                    data: [
-                        {% for rank in ranks[:100] | reverse %}
-                            { name: Date.parse('{{ rank["update_time"] }}'), y: {{ rank["wins"] }} },
-                        {% endfor %}
-                    ]
+                    data: data.map((point) => { return { 'name': point.name, 'y': point.wins }; } )
                 }
             ],
             legend: { enabled: false }
