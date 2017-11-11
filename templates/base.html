@@ -34,7 +34,7 @@
 {% block styles -%}
     {{super()}}  {# do not forget to call super or Bootstrap's own stylesheets
                     will disappear! #}
-    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/cyborg/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cyborg/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
 {% endblock %}
 
