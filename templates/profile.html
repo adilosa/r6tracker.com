@@ -205,9 +205,16 @@
 
 {% block scripts %}
     {{ super() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="{{ url_for('static', filename='highcharts-dark-unica.js') }}"></script>
     <script type="text/javascript">
+        Highcharts.setOptions({
+            global: {
+                timezone: 'America/New_York'
+            }
+        });
         var data = [
             {% for rank in ranks[:100] | reverse %}
                 {
@@ -348,7 +355,7 @@
             ],
             tooltip: {
                 shared: true,
-                headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
+                headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>'
             },
             plotOptions: {
                 spline: {
@@ -375,7 +382,7 @@
             }],
             tooltip: {
                 shared: true,
-                headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>'
+                headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>'
             },
             plotOptions: {
                 areaspline: {
@@ -411,7 +418,7 @@
                 }],
                 tooltip: {
                     shared: true,
-                    headerFormat: '<b>{point.key:%A, %b %e, %H:%M}Z</b><br>',
+                    headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>',
                     valueDecimals: 3
                 },
                 plotOptions: {
