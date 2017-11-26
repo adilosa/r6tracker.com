@@ -222,7 +222,7 @@
     {{ super() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="{{ url_for('static', filename='highcharts-dark-unica.js') }}"></script>
     <script type="text/javascript">
         Highcharts.setOptions({
@@ -231,18 +231,14 @@
             }
         });
         var data = [
-            {% for rank in ranks[:100] | reverse %}
+            {% for rank in ranks | reverse %}
                 {
                     name: Date.parse('{{ rank["update_time"] }}'),
-                    mmr: {{ rank["mmr"] }},
-                    uncertainty: {{ rank["skill_stdev"] }},
-                    losses: {{ rank["losses"] }},
-                    wins: {{ rank["wins"] }}
+                    mmr: {{ rank["mmr"] }}
                 },
             {% endfor %}
         ]
-        Highcharts.chart('rank-chart', {
-            title: { text: 'Rank' },
+        Highcharts.stockChart('rank-chart', {
             xAxis: {
                 title: { text: '' },
                 visible: false,
@@ -259,6 +255,7 @@
                     title: { text: '' },
                     minorTickLength: 0,
                     tickLength: 0,
+                    minRange: 400,
                     plotBands: [
                         {
                             label: { verticalAlign: 'middle', text: 'Copper IV', style: { color: '#FDFDFD' } },
@@ -370,7 +367,13 @@
             ],
             tooltip: {
                 shared: true,
-                headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>'
+                xDateFormat: '%A, %b %e, %l:%M%p ET'
+            },
+            scrollbar: {
+                enabled: false
+            },
+            rangeSelector: {
+                selected: 0
             },
             plotOptions: {
                 spline: {
@@ -379,43 +382,13 @@
                     }
                 }
             },
-            series: [{
-                name: 'MMR',
-                type: 'spline',
-                color: 'rgb(245, 245, 245)',
-                data: data.map((point) => { return { 'name': point.name, 'y': point.mmr }; } )
-            }],
-            legend: { enabled: false }
-        });
-        Highcharts.chart('wl-chart', {
-            chart: { type: 'areaspline' },
-            title: { text: 'Win/Loss' },
-            xAxis: { title: { text: '' }, visible: false },
-            yAxis: [{
-                gridLineWidth: 0,
-                title: { text: '' },
-            }],
-            tooltip: {
-                shared: true,
-                headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>'
-            },
-            plotOptions: {
-                areaspline: {
-                    stacking: 'percent',
-                }
-            },
             series: [
                 {
-                    name: 'Losses',
-                    type: 'areaspline',
-                    color: 'rgb(122, 126, 135)',
-                    data: data.map((point) => { return { 'name': point.name, 'y': point.losses }; } )
-                },
-                {
-                    name: 'Wins',
-                    type: 'areaspline',
-                    color: 'rgb(61, 170, 223)',
-                    data: data.map((point) => { return { 'name': point.name, 'y': point.wins }; } )
+                    name: 'MMR',
+                    yAxis: 0,
+                    type: 'spline',
+                    color: 'rgb(245, 245, 245)',
+                    data: data.map((point) => { return [ point.name, point.mmr ]; })
                 }
             ],
             legend: { enabled: false }
@@ -538,11 +511,8 @@
         </div>
     </div>
     <div class="row text-center">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div id="rank-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="wl-chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
     <div class="row text-center">
