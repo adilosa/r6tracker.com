@@ -59,13 +59,20 @@ def rank(profileId):
 
 @cache.memoize(60)
 def stats(profileId):
-    return [augmented_stat(item['stats']) for item in _datafile('profiles/{}/stats.jsonl.gz'.format(profileId))]
+    return [
+        with_field(
+            augmented_stat(item['stats']), 'update_time', item['update_time']
+        ) for item in _datafile('profiles/{}/stats.jsonl.gz'.format(profileId))
+    ]
 
 
 def augmented_stat(stat):
     stat['operatorpvp_roundplayed:infinite'] = sum([val for key, val in stat.items() if "operatorpvp_roundplayed:" in key])
     return stat
 
+def with_field(item, name, value):
+    item[name] = value
+    return item
 
 @application.route("/")
 def overview():
