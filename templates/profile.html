@@ -367,7 +367,7 @@
             ],
             tooltip: {
                 shared: true,
-                xDateFormat: '%A, %b %e, %l:%M%p ET'
+                xDateFormat: '%A, %b %e, %Y %l:%M%p ET'
             },
             scrollbar: {
                 enabled: false
@@ -417,7 +417,7 @@
                     minRange: 0.01
                 }
             ],
-            tooltip: { xDateFormat: '%A, %b %e, %l:%M%p ET' },
+            tooltip: { xDateFormat: '%A, %b %e, %Y %l:%M%p ET' },
             scrollbar: { enabled: false },
             rangeSelector: { selected: 2 },
             series: [
@@ -427,7 +427,6 @@
                     color: 'rgb(245, 245, 245)',
                     data: statsdata.map(
                         (point) => {
-                            console.log(point.bulletsfired / point.rankedtime)
                             return [
                                 point.name,
                                 point.bulletsfired / point.rankedtime
@@ -449,7 +448,7 @@
                 }],
                 tooltip: {
                     shared: true,
-                    headerFormat: '<b>{point.key:%A, %b %e, %l:%M%p ET}</b><br>',
+                    headerFormat: '<b>{point.key:%A, %b %e, %Y %l:%M%p ET}</b><br>',
                     valueDecimals: 3
                 },
                 plotOptions: {
