@@ -2,6 +2,31 @@
 
 {% import "bootstrap/utils.html" as utils %}
 
+{% set rank_icons = [
+        "https://i.imgur.com/ehILQ3i.jpg",
+        "https://i.imgur.com/6CxJoMn.jpg",
+        "https://i.imgur.com/eI11lah.jpg",
+        "https://i.imgur.com/0J0jSWB.jpg",
+        "https://i.imgur.com/42AC7RD.jpg",
+        "https://i.imgur.com/QD5LYD7.jpg",
+        "https://i.imgur.com/9AORiNm.jpg",
+        "https://i.imgur.com/hmPhPBj.jpg",
+        "https://i.imgur.com/D36ZfuR.jpg",
+        "https://i.imgur.com/m8GToyF.jpg",
+        "https://i.imgur.com/m8GToyF.jpg",
+        "https://i.imgur.com/EswGcx1.jpg",
+        "https://i.imgur.com/KmFpkNc.jpg",
+        "https://i.imgur.com/6Qg6aaH.jpg",
+        "https://i.imgur.com/B0s1o1h.jpg",
+        "https://i.imgur.com/ELbGMc7.jpg",
+        "https://i.imgur.com/ffDmiPk.jpg",
+        "https://i.imgur.com/Sv3PQQE.jpg",
+        "https://i.imgur.com/Uq3WhzZ.jpg",
+        "https://i.imgur.com/xx03Pc5.jpg",
+        "https://i.imgur.com/nODE0QI.jpg"
+    ]
+%}
+
 {% block styles %}
     {{ super() }}
     <style type="text/css">
@@ -12,6 +37,10 @@
 
         .img-thumbnail {
             padding: 1px;
+        }
+
+        .rank {
+            padding-bottom: 5px;
         }
     </style>
 {% endblock %}
@@ -28,7 +57,7 @@
     {%- endif %}
   {%- endwith %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="" style="width: 450px">
             <ul>
                 {% for profile in profiles %}
                     <li>
@@ -41,6 +70,10 @@
                             <div class="media-body">
                                 <h3 class="media-heading">{{ profile['name'] }}</h3>
                                 Rank: {{ "{:.2f}".format(profile['rank']['mmr']) }}    W/L: {{ "{:.2f}".format(profile['rank']['wins'] / profile['rank']['losses']) }}
+                            </div>
+                            <div class="media-right">
+                                {% set rank_int = profile['rank']['rank'] | int %}
+                                <img class="media-object rank" src="{{ rank_icons[rank_int] }}" height="64" width="64">
                             </div>
                         </div>
                     </li>
