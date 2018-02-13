@@ -30,7 +30,9 @@ profileNames = OrderedDict([
     ("86fb0498-0b1b-4d21-b621-310cab9bec15", "ChaosNox"),
     ("ec3061f9-968f-4443-b760-0c3dc354c9c2", "KrakenMonkey"),
     ("bcf0ef91-9084-47d9-860d-91a2fdbac260", "UnfairRainbow"),
-    ("42bff726-304e-44dd-809f-7d0f312a9300", "whitew0lf2112")
+    ("42bff726-304e-44dd-809f-7d0f312a9300", "whitew0lf2112"),
+    ("69d1cb01-ad43-4ff7-b31c-6332ba88b9a8", "HitRegkt"),
+    ("71c42f4d-96b6-4fb2-a980-39b92529d116", "SyNySt3r.-")
 ])
 
 s3 = boto3.resource('s3')
@@ -47,6 +49,7 @@ def _datafile(key):
         [
             json.loads(line.decode('utf-8'))
             for line in gzip.GzipFile(fileobj=_cached_datafile(key, s3.Object('r6tracker', key).e_tag))
+            if line.decode('utf-8').strip()
         ],
         key=lambda i: i['update_time'],
         reverse=True
