@@ -6,7 +6,7 @@ Resources:
         Type: AWS::ElasticBeanstalk::Environment
         Properties:
             ApplicationName: { Ref: r6trackercom }
-            SolutionStackName: 64bit Amazon Linux 2017.03 v2.6.5 running Python 3.6
+            SolutionStackName: 64bit Amazon Linux 2017.09 v2.6.5 running Python 3.6
             OptionSettings:
               -
                 Namespace: aws:autoscaling:launchconfiguration
