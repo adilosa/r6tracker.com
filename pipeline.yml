@@ -6,6 +6,12 @@ Parameters:
   GitHubOAuthToken:
     Type: String
     NoEcho: true
+  ApplicationName:
+    Type: String
+    Default: r6trackercom
+  EnvironmentName:
+    Type: String
+    Default: r6trackercom-env
 Resources:
   ArtifactsBucket:
     Type: 'AWS::S3::Bucket'
@@ -56,7 +62,7 @@ Resources:
           RunOrder: 1
       - Name: DeployApplication
         Actions:
-        - Name: DeployApplicationAction
+        - Name: DeployApplicationStackAction
           ActionTypeId:
             Category: Deploy
             Owner: AWS
@@ -68,9 +74,24 @@ Resources:
             RoleArn: !Sub '${CloudFormationRole.Arn}'
             StackName: 'r6trackercom-Stack'
             TemplatePath: 'Zip::application.yml'
+            ParameterOverrides: {
+              "ApplicationName": { "Ref": "ApplicationName" },
+              "EnvironmentName": { "Ref": "EnvironmentName" }
+            }
           InputArtifacts:
           - Name: Zip
           RunOrder: 1
+        - Name: DeployApplicationAction
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Provider: ElasticBeanstalk
+            Version: 1
+          Configuration:
+            ApplicationName: !Ref: ApplicationName
+            EnvironmentName: !Ref: EnvironmentName
+          InputArtifacts:
+          - Name: Zip
   PipelineRole:
     Type: 'AWS::IAM::Role'
     Properties:
