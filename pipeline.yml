@@ -16,7 +16,7 @@ Resources:
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactsBucket
-      Name: 'r6trackercom'
+      Name: 'r6tracker.com'
       RestartExecutionOnUpdate: true
       RoleArn: !Sub '${PipelineRole.Arn}'
       Stages:
