@@ -74,10 +74,11 @@ Resources:
             RoleArn: !Sub '${CloudFormationRole.Arn}'
             StackName: 'r6trackercom-Stack'
             TemplatePath: 'Zip::application.yml'
-            ParameterOverrides: {
-              "ApplicationName": { "Ref": "ApplicationName" },
-              "EnvironmentName": { "Ref": "EnvironmentName" }
-            }
+            ParameterOverrides: |
+              {
+                "ApplicationName": { "Ref": "ApplicationName" },
+                "EnvironmentName": { "Ref": "EnvironmentName" }
+              }
           InputArtifacts:
           - Name: Zip
           RunOrder: 1
