@@ -97,10 +97,11 @@ Resources:
       ManagedPolicyArns:
       - 'arn:aws:iam::aws:policy/AdministratorAccess'
   r6trackercom:
-      Type: AWS::ElasticBeanstalk::Application
+    Type: AWS::ElasticBeanstalk::Application
   Environment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
+      ApplicationName: !Ref r6trackercom
       SolutionStackName: 64bit Amazon Linux 2017.09 v2.6.5 running Python 3.6
       OptionSettings:
         -
