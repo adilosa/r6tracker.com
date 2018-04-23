@@ -5,19 +5,22 @@ Resources:
     Environment:
         Type: AWS::ElasticBeanstalk::Environment
         Properties:
-            ApplicationName: { Ref: r6trackercom }
-            SolutionStackName: 64bit Amazon Linux 2017.09 v2.6.5 running Python 3.6
-            OptionSettings:
-              -
-                Namespace: aws:autoscaling:launchconfiguration
-                OptionName: InstanceType
-                Value: t2.micro
-              -
-                Namespace: aws:autoscaling:launchconfiguration
-                OptionName: IamInstanceProfile
-                Value: "aws-elasticbeanstalk-ec2-role"
-            Tier:
-                Name: "WebServer"
-                Type: "Standard"
-
-
+          ApplicationName: !Ref r6trackercom
+          SolutionStackName: 64bit Amazon Linux 2017.09 v2.6.5 running Python 3.6
+          OptionSettings:
+            -
+              Namespace: aws:autoscaling:launchconfiguration
+              OptionName: InstanceType
+              Value: t2.micro
+            -
+              Namespace: aws:autoscaling:launchconfiguration
+              OptionName: IamInstanceProfile
+              Value: "aws-elasticbeanstalk-ec2-role"
+          Tier:
+              Name: "WebServer"
+              Type: "Standard"
+Outputs:
+  r6trackercom-ApplicationID:
+    Value: !Ref r6trackercom
+    Export:
+      Name: !Sub "${AWS::StackName}-r6trackercom-ApplicationID"
