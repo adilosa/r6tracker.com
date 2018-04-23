@@ -56,6 +56,7 @@ Resources:
             RoleArn: !Sub '${CloudFormationRole.Arn}'
             StackName: 'r6trackercom-DeployStack'
             TemplatePath: 'Zip::pipeline.yml'
+            TemplateConfiguration: 'Zip::template-config.json'
             ParameterOverrides: !Sub '{"GitHubUserName": "${GitHubUserName}", "GitHubOAuthToken": "${GitHubOAuthToken}"}'
           InputArtifacts:
           - Name: Zip
@@ -74,11 +75,7 @@ Resources:
             RoleArn: !Sub '${CloudFormationRole.Arn}'
             StackName: 'r6trackercom-Stack'
             TemplatePath: 'Zip::application.yml'
-            ParameterOverrides: |
-              {
-                "ApplicationName": { "Ref": "ApplicationName" },
-                "EnvironmentName": { "Ref": "EnvironmentName" }
-              }
+            TemplateConfiguration: 'Zip::template-config.json'
           InputArtifacts:
           - Name: Zip
           RunOrder: 1
@@ -93,6 +90,7 @@ Resources:
             EnvironmentName: !Ref EnvironmentName
           InputArtifacts:
           - Name: Zip
+          RunOrder: 2
   PipelineRole:
     Type: 'AWS::IAM::Role'
     Properties:

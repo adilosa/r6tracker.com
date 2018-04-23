@@ -1,0 +1,6 @@
+{
+    "Parameters": {
+        "ApplicationName": "r6trackercom",
+        "EnvironmentName": "r6trackercom-env"
+    }
+}
