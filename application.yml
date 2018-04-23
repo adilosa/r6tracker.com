@@ -20,7 +20,7 @@ Resources:
               Name: "WebServer"
               Type: "Standard"
 Outputs:
-  r6trackercom-ApplicationID:
+  r6trackercom:
     Value: !Ref r6trackercom
     Export:
       Name: !Sub "${AWS::StackName}-r6trackercom-ApplicationID"
